@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --accent-r: 139;
+  --accent-g: 92;
+  --accent-b: 246;
+}
+
+.accent-violet  { --accent-r: 139; --accent-g: 92;  --accent-b: 246; }
+.accent-blue    { --accent-r: 59;  --accent-g: 130; --accent-b: 246; }
+.accent-emerald { --accent-r: 16;  --accent-g: 185; --accent-b: 129; }
+.accent-rose    { --accent-r: 244; --accent-g: 63;  --accent-b: 94;  }
+.accent-amber   { --accent-r: 245; --accent-g: 158; --accent-b: 11;  }
+.accent-cyan    { --accent-r: 6;   --accent-g: 182; --accent-b: 212; }

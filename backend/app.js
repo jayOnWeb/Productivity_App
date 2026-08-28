@@ -15,6 +15,16 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error("Database connection middleware error:", err);
+        res.status(500).json({ message: "Database connection failure", error: err.message });
+    }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/tasks', tasksRoutes);

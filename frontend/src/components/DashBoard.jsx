@@ -36,7 +36,8 @@ const DashBoard = () => {
       return;
     }
     try {
-      const userRes = await axios.get("http://localhost:3000/api/user/dashboard", {
+      const API_BASE = import.meta.env.VITE_API_URL || "";
+      const userRes = await axios.get(`${API_BASE}/api/user/dashboard`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(userRes.data.user);

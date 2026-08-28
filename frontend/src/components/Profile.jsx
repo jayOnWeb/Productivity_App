@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "http://localhost:3000/api/user";
+const API_BASE = import.meta.env.VITE_API_URL || "";
+const API = `${API_BASE}/api/user`;
 
 const Profile = () => {
   const [user, setUser] = useState(null);

@@ -21,7 +21,8 @@ const Layout = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-        const userRes = await axios.get("http://localhost:3000/api/user/dashboard", {
+        const API_BASE = import.meta.env.VITE_API_URL || "";
+        const userRes = await axios.get(`${API_BASE}/api/user/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserEmail(userRes.data.user.email);

@@ -5,7 +5,9 @@
   "main": "start.js",
   "scripts": {
     "start": "node start.js",
-    "dev": "node start.js"
+    "dev": "node start.js",
+    "build": "npm run build --prefix frontend",
+    "install-all": "npm install --prefix backend && npm install --prefix frontend"
   },
   "keywords": [
     "productivity",

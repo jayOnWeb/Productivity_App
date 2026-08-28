@@ -58,13 +58,12 @@ const taskSchema = new mongoose.Schema(
 );
 
 // Pre-save hook to normalize description and discription
-taskSchema.pre("save", function (next) {
+taskSchema.pre("save", function () {
   if (this.discription && !this.description) {
     this.description = this.discription;
   } else if (this.description && !this.discription) {
     this.discription = this.description;
   }
-  next();
 });
 
 const Task = mongoose.model("Task", taskSchema);

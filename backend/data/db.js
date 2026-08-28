@@ -5,7 +5,7 @@ const connectDB = async () => {
         return;
     }
     try {
-        const connStr = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/prodApp';
+        const connStr = process.env.MONGO_URI || 'mongodb+srv://kneeltogenius_db_user:zg401CqAJDd60DQE@prod.ghklwdw.mongodb.net/?appName=PROD';
         await mongoose.connect(connStr);
         console.log("mongodb connected...");
     } catch (error) {

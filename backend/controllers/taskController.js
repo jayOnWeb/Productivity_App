@@ -43,6 +43,7 @@ const createTask = async (req, res) => {
     console.error("Create Task Error:", error);
     res.status(500).json({
       message: "Server error while creating task",
+      error: error.message,
     });
   }
 };
@@ -79,8 +80,8 @@ const batchCreateTasks = async (req, res) => {
       tasks: createdTasks,
     });
   } catch (error) {
-    console.log("Batch Create Error:", error);
-    res.status(500).json({ message: "Server error creating batch tasks" });
+    console.error("Batch Create Error:", error);
+    res.status(500).json({ message: "Server error creating batch tasks", error: error.message });
   }
 };
 

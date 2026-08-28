@@ -1,6 +1,7 @@
 const express = require('express');
 const {
   createTask,
+  batchCreateTasks,
   getTasks,
   updateTask,
   deleteTask,
@@ -13,6 +14,9 @@ const router = express.Router();
 
 // ✅ Create Task
 router.post('/', protect, createTask);
+
+// ✅ Batch Create Tasks (for AI task generation / breakdown)
+router.post('/batch', protect, batchCreateTasks);
 
 // ✅ Get All Tasks (only logged-in user)
 router.get('/', protect, getTasks);

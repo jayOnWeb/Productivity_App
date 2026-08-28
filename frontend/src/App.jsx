@@ -27,7 +27,7 @@ const App = () => {
         </Route>
       </Routes>
     </BrowserRouter>
-  );
+  ); 
 };
 
 export default App;

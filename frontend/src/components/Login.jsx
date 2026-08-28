@@ -20,8 +20,6 @@ const Login = () => {
 
         const data = await loginUser(LoginData);
 
-        console.log(data);
-
         if(data && data.token){
             localStorage.setItem("token", data.token);
             window.location.href = '/dashboard';

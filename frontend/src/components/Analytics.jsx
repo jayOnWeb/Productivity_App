@@ -12,10 +12,9 @@ const Analytics = () => {
       setTasks(taskData.tasks);
 
       const logData = await getLogs();
-      console.log("LOGS FROM BACKEND:", logData.logs); // 👈 add this
       setLogs(logData.logs);
     } catch (error) {
-      console.log(error);
+      // ignore or handle error silently
     }
   };
   fetchData();

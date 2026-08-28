@@ -33,7 +33,7 @@ router.put('/update-name', protect, async (req, res) => {
         res.json({ message: "Name updated successfully", user });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });
@@ -76,7 +76,7 @@ router.post('/request-email-change', protect, async (req, res) => {
         res.json({ message: "OTP sent to your new email" });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });
@@ -123,7 +123,7 @@ router.put('/verify-email-change', protect, async (req, res) => {
         res.json({ message: "Email updated successfully", user: updatedUser });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });
@@ -156,7 +156,7 @@ router.post('/request-password-change', protect, async (req, res) => {
         res.json({ message: "OTP sent to your registered email" });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });
@@ -205,7 +205,7 @@ router.put('/verify-password-change', protect, async (req, res) => {
         res.json({ message: "Password updated successfully" });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error" });
     }
 });

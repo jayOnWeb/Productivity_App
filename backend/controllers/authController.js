@@ -16,14 +16,17 @@ const registerUser = async (req, res) => {
     });
 
     res.json({
-      message: "user registered successfully",
-      user,
+      message: "User registered successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(400).json({
-      message: "Server error",
+      message: "Server error during registration",
     });
-    console.log(error);
   }
 };
 
@@ -49,22 +52,20 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign(
       { _id: user._id },
-      "mysecretkey",
+      process.env.JWT_SECRET || "mysecretkey",
       {
-        expiresIn : "1h"
+        expiresIn: "7d",
       }
-    )
+    );
 
     res.json({
-        message : "login successfully...",
-        token : token,
+      message: "Login successful",
+      token: token,
     });
   } catch (error) {
     res.status(400).json({
-        message : "Server error",
+      message: "Server error during login",
     });
-
-    console.log(error);
   }
 };
 

@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
+import AIAssistantModal from "./AIAssistantModal";
 
 const Layout = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [isAiOpen, setIsAiOpen] = useState(false);
   const navigate = useNavigate();
-  const { accentStyle, accentText, accentBorder } = useSettings();
+  const { accentStyle, accentText } = useSettings();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -25,7 +27,7 @@ const Layout = () => {
         setUserEmail(userRes.data.user.email);
         setUserName(userRes.data.user.name);
       } catch (error) {
-        console.log(error);
+        console.error("Fetch user details error:", error);
       }
     };
     fetchUserDetails();
@@ -82,11 +84,13 @@ const Layout = () => {
 
   return (
     <div className="flex min-h-screen bg-zinc-950">
+      <AIAssistantModal isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
+
       {/* SIDEBAR */}
-      <div className="w-60 bg-zinc-900 border-r border-zinc-800 flex flex-col py-6 px-4 fixed h-full">
+      <div className="w-60 bg-zinc-900 border-r border-zinc-800 flex flex-col py-6 px-4 fixed h-full z-20">
 
         {/* Logo */}
-        <div className="flex items-center gap-2 px-2 mb-10">
+        <div className="flex items-center gap-2 px-2 mb-8">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
             style={accentStyle}
@@ -97,6 +101,15 @@ const Layout = () => {
           </div>
           <span className="text-white font-semibold tracking-tight text-sm">FocusFlow</span>
         </div>
+
+        {/* AI Action Trigger in Sidebar */}
+        <button
+          onClick={() => setIsAiOpen(true)}
+          className="w-full mb-6 py-2.5 px-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-lg shadow-violet-900/30 transition-all"
+        >
+          <span>✨</span>
+          <span>Focus AI Assistant</span>
+        </button>
 
         {/* Nav */}
         <nav className="flex-1 space-y-1">
@@ -110,14 +123,9 @@ const Layout = () => {
                 <div
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 border ${
                     isActive
-                      ? "border-opacity-20"
+                      ? "border-opacity-20 text-white bg-violet-600/10 border-violet-500/30"
                       : "border-transparent text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60"
                   }`}
-                  style={isActive ? {
-                    backgroundColor: `rgb(var(--accent-r) var(--accent-g) var(--accent-b) / 0.12)`,
-                    color: `rgb(var(--accent-r) var(--accent-g) var(--accent-b))`,
-                    borderColor: `rgb(var(--accent-r) var(--accent-g) var(--accent-b) / 0.25)`,
-                  } : {}}
                 >
                   {item.icon}
                   {item.label}
@@ -141,14 +149,9 @@ const Layout = () => {
         {/* User pill */}
         <div className="mt-4 px-3 py-3 rounded-xl bg-zinc-800/50 border border-zinc-700/40 flex items-center gap-3">
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
-            style={{
-              backgroundColor: `rgb(var(--accent-r) var(--accent-g) var(--accent-b) / 0.25)`,
-              borderWidth: "1px",
-              borderColor: `rgb(var(--accent-r) var(--accent-g) var(--accent-b) / 0.35)`,
-            }}
+            className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-violet-500/20 border border-violet-500/30"
           >
-            <span className="text-xs font-bold" style={accentText}>
+            <span className="text-xs font-bold text-violet-300">
               {userName ? userName[0].toUpperCase() : "U"}
             </span>
           </div>
@@ -161,8 +164,17 @@ const Layout = () => {
       </div>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 ml-60 p-8 text-white min-h-screen">
+      <div className="flex-1 ml-60 p-8 text-white min-h-screen relative">
         <Outlet />
+
+        {/* Floating AI Button (Bottom Right) */}
+        <button
+          onClick={() => setIsAiOpen(true)}
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-2xl shadow-violet-900/60 hover:scale-105 active:scale-95 transition-all z-40"
+          title="Open Focus AI Assistant"
+        >
+          <span className="text-lg">✨</span>
+        </button>
       </div>
     </div>
   );

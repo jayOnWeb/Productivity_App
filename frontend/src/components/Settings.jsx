@@ -1,10 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSettings } from '../context/SettingsContext'
 
 const Settings = () => {
   const { theme, setTheme, accent, setAccent } = useSettings();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
+
+  const [apiKey, setApiKey] = useState("");
+  const [keySaved, setKeySaved] = useState(false);
+
+  useEffect(() => {
+    const storedKey = localStorage.getItem("openrouter_api_key");
+    if (storedKey) {
+      setApiKey(storedKey);
+    }
+  }, []);
+
+  const handleSaveApiKey = (e) => {
+    e.preventDefault();
+    if (apiKey.trim()) {
+      localStorage.setItem("openrouter_api_key", apiKey.trim());
+    } else {
+      localStorage.removeItem("openrouter_api_key");
+    }
+    setKeySaved(true);
+    setTimeout(() => setKeySaved(false), 3000);
+  };
 
   const themes = [
     {
@@ -49,12 +70,80 @@ const Settings = () => {
     <div className="max-w-2xl mx-auto">
 
       {/* Header */}
-      <div className="mb-10">
-        <p className="text-zinc-500 text-sm mb-1">Preferences</p>
+      <div className="mb-8">
+        <p className="text-zinc-500 text-sm mb-1">Preferences & AI</p>
         <h1 className="text-2xl font-bold text-white tracking-tight">Settings</h1>
       </div>
 
       <div className="space-y-4">
+
+        {/* AI OpenRouter Configuration */}
+        <div className="bg-zinc-900 border border-violet-500/30 rounded-2xl p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-white flex items-center gap-2">
+                <span>🤖</span> OpenRouter AI Integration
+              </h2>
+              <p className="text-zinc-400 text-xs mt-1">Configure your OpenRouter API key and view backup model fallback status</p>
+            </div>
+            <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              Multi-Tier Fallback Active
+            </span>
+          </div>
+
+          <form onSubmit={handleSaveApiKey} className="space-y-3">
+            <div>
+              <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block mb-1">
+                OpenRouter API Key
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  placeholder="sk-or-v1-..."
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="flex-1 bg-zinc-800 border border-zinc-700 focus:border-violet-500 text-white placeholder-zinc-600 rounded-xl px-3 py-2 text-xs focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-violet-900/30 transition-all"
+                >
+                  Save Key
+                </button>
+              </div>
+              {keySaved && (
+                <p className="text-[11px] text-emerald-400 mt-1">✓ Key successfully saved to browser local storage!</p>
+              )}
+            </div>
+          </form>
+
+          {/* Model Fallback Chain Information */}
+          <div className="mt-4 pt-4 border-t border-zinc-800">
+            <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+              Model Fallback Hierarchy:
+            </p>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              <span className="bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded">
+                1. Gemini 2.0 Flash
+              </span>
+              <span className="bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded">
+                2. LLaMA 3.3 70B
+              </span>
+              <span className="bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded">
+                3. DeepSeek Chat
+              </span>
+              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">
+                4. LLaMA 3.2 11B (Free)
+              </span>
+              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">
+                5. Mistral 7B (Free)
+              </span>
+              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">
+                6. Qwen 2.5 Coder (Free)
+              </span>
+            </div>
+          </div>
+        </div>
 
         {/* Theme */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
@@ -99,27 +188,6 @@ const Settings = () => {
                     : "opacity-60 hover:opacity-100 hover:scale-105"
                 }`}
               />
-            ))}
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-zinc-600 text-xs">Selected:</span>
-            <span className="text-zinc-300 text-xs font-medium capitalize">{accent}</span>
-          </div>
-        </div>
-
-        {/* About */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-          <h2 className="text-sm font-semibold text-white mb-4">About</h2>
-          <div className="space-y-3">
-            {[
-              { label: "App", value: "FocusFlow" },
-              { label: "Version", value: "1.0.0" },
-              { label: "Build", value: "Production" },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center justify-between">
-                <span className="text-zinc-500 text-sm">{item.label}</span>
-                <span className="text-zinc-300 text-sm font-medium">{item.value}</span>
-              </div>
             ))}
           </div>
         </div>

@@ -21,8 +21,6 @@ const Register = () => {
 
         const data = await registerUser(regData);
 
-        console.log("Backend se Data aaya : " , data);
-
         if(data){
             window.location.href = "/login";
         }

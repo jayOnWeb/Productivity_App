@@ -10,8 +10,6 @@ const aiRoutes = require('./Routes/aiRoute');
 
 const app = express();
 
-connectDB();
-
 app.use(express.json());
 app.use(cors());
 
